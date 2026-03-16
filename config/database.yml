@@ -83,11 +83,27 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
+  <% if ENV['DATABASE_URL'].present? %>
   url: <%= ENV['DATABASE_URL'] %>
+  <% else %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] %>
+  database: <%= ENV['DATABASE_NAME'] %>
+  username: <%= ENV['DATABASE_USER'] || ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  <% end %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 staging:
   adapter: postgresql
   encoding: unicode
+  <% if ENV['DATABASE_URL'].present? %>
   url: <%= ENV['DATABASE_URL'] %>
+  <% else %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] %>
+  database: <%= ENV['DATABASE_NAME'] %>
+  username: <%= ENV['DATABASE_USER'] || ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  <% end %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
