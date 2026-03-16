@@ -50,6 +50,8 @@ RUN yarn install --frozen-lockfile
 
 # Copy application code
 COPY --link . .
+COPY docker-entrypoint.sh /rails/docker-entrypoint.sh
+RUN chmod +x /rails/docker-entrypoint.sh
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
@@ -62,8 +64,8 @@ ENV LD_PRELOAD="libjemalloc.so.2" \
     MALLOC_CONF="dirty_decay_ms:1000,narenas:2,background_thread:true"
 
 # Entrypoint prepares the database
-ENTRYPOINT ["docker-entrypoint"]
+ENTRYPOINT ["/rails/docker-entrypoint.sh"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["rails", "server"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
