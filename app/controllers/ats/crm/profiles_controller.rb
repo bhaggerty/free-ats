@@ -7,7 +7,7 @@ class ATS::Crm::ProfilesController < AuthorizedController
 
   before_action { @nav_item = :crm }
   before_action :set_candidate, only: %i[move_to_crm remove_from_crm]
-  before_action :authorize!, only: %i[index]
+  before_action -> { authorize! with: ATS::CandidatePolicy }, only: %i[index]
   before_action -> { authorize!(@candidate, with: ATS::CandidatePolicy) },
                 only: %i[move_to_crm remove_from_crm]
 

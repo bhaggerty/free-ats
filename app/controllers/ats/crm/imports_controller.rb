@@ -6,7 +6,7 @@ class ATS::Crm::ImportsController < AuthorizedController
   layout "ats/application"
 
   before_action { @nav_item = :crm }
-  before_action :authorize!
+  before_action -> { authorize! with: ATS::CandidatePolicy }
 
   def new; end
 
