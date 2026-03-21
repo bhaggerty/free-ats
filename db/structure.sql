@@ -159,8 +159,10 @@ CREATE TYPE public.event_type AS ENUM (
     'active_storage_attachment_added',
     'active_storage_attachment_removed',
     'candidate_added',
+    'candidate_added_to_crm',
     'candidate_changed',
     'candidate_merged',
+    'candidate_removed_from_crm',
     'candidate_recruiter_assigned',
     'candidate_recruiter_unassigned',
     'email_received',
@@ -1124,7 +1126,9 @@ CREATE TABLE public.candidates (
     skype character varying DEFAULT ''::character varying NOT NULL,
     candidate_source_id bigint,
     tenant_id bigint NOT NULL,
-    external_source_id bigint
+    external_source_id bigint,
+    in_crm boolean DEFAULT false NOT NULL,
+    resume_text text
 );
 
 
@@ -3540,6 +3544,12 @@ CREATE INDEX index_candidates_on_recruiter_id ON public.candidates USING btree (
 
 CREATE INDEX index_candidates_on_tenant_id ON public.candidates USING btree (tenant_id);
 
+--
+-- Name: index_candidates_on_in_crm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidates_on_in_crm ON public.candidates USING btree (in_crm);
+
 
 --
 -- Name: index_disqualify_reasons_on_tenant_id_and_list_index; Type: INDEX; Schema: public; Owner: -
@@ -4763,6 +4773,8 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260317000002'),
+('20260317000001'),
 ('20250609103428'),
 ('20250225065941'),
 ('20250221083833'),
