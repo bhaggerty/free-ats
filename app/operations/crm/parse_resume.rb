@@ -57,6 +57,11 @@ class Crm::ParseResume < ApplicationOperation
   end
 
   def extract_docx_text(uploaded_file)
+    unless defined?(Docx)
+      Rails.logger.warn("Crm::ParseResume: docx gem not installed, skipping DOCX extraction")
+      return nil
+    end
+
     doc = Docx::Document.open(uploaded_file.path)
     doc.paragraphs.map(&:to_s).join("\n")
   rescue StandardError => e
