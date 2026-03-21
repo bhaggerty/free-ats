@@ -67,6 +67,26 @@ class Candidate < ApplicationRecord
   }
 
   scope :not_merged, -> { where(merged_to: nil) }
+  scope :crm, -> { where(in_crm: true) }
+  scope :not_in_crm, -> { where(in_crm: false) }
+
+  def self.search_crm(query)
+    query = query.strip
+    return none unless query.match?(/[[:alpha:]\d]{3,}/)
+
+    pattern = "%#{query}%"
+    left_joins(:candidate_email_addresses)
+      .where(
+        <<~SQL.squish,
+          lower(f_unaccent(candidates.full_name)) LIKE lower(f_unaccent(?))
+          OR candidate_email_addresses.address ILIKE ?
+          OR candidates.company ILIKE ?
+          OR candidates.resume_text ILIKE ?
+        SQL
+        pattern, pattern, pattern, pattern
+      )
+      .distinct
+  end
 
   def self.search_by_names_or_emails(name_or_email)
     name_or_email = name_or_email.strip

@@ -47,8 +47,10 @@ class Event < ApplicationRecord
     active_storage_attachment_added
     active_storage_attachment_removed
     candidate_added
+    candidate_added_to_crm
     candidate_changed
     candidate_merged
+    candidate_removed_from_crm
     candidate_recruiter_assigned
     candidate_recruiter_unassigned
     email_received

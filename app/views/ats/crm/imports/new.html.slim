@@ -1,0 +1,67 @@
+- ats_title("Import CRM Profiles")
+
+.mb-4
+  h1 Import Profiles
+  = link_to "← Back to CRM", ats_crm_profiles_path, class: "text-muted"
+
+.row.g-4
+  / ── CSV Import ──────────────────────────────────────────────────────
+  .col-12
+    .card
+      .card-header
+        h5.card-title.mb-0 Import from CSV
+      .card-body
+        p.text-muted.mb-3
+          | Upload a CSV file with columns:
+          code  name
+          | ,
+          code  email
+          | ,
+          code  company
+          | ,
+          code  headline
+          | ,
+          code  linkedin
+          | . Column order does not matter.
+        = form_with url: ats_crm_imports_path, multipart: true, local: true do |f|
+          = hidden_field_tag :import_type, "csv"
+          .mb-3
+            = f.label :file, "CSV File", class: "form-label"
+            = f.file_field :file, class: "form-control", accept: ".csv"
+          = f.submit "Import CSV", class: "btn btn-primary"
+
+  / ── LinkedIn URLs ───────────────────────────────────────────────────
+  .col-12
+    .card
+      .card-header
+        h5.card-title.mb-0 Import from LinkedIn URLs
+      .card-body
+        p.text-muted.mb-3
+          | Paste one LinkedIn profile URL per line.
+          br
+          | Example:
+          code  https://linkedin.com/in/jane-smith
+        = form_with url: ats_crm_imports_path, local: true do |f|
+          = hidden_field_tag :import_type, "linkedin"
+          .mb-3
+            = f.label :linkedin_urls, "LinkedIn Profile URLs (one per line)", class: "form-label"
+            = f.text_area :linkedin_urls, rows: 6, class: "form-control font-monospace",
+                          placeholder: "https://linkedin.com/in/first-last\nhttps://linkedin.com/in/another-person"
+          = f.submit "Import from LinkedIn", class: "btn btn-primary"
+
+  / ── Resume File ─────────────────────────────────────────────────────
+  .col-12
+    .card
+      .card-header
+        h5.card-title.mb-0 Import Single Resume (PDF or DOCX)
+      .card-body
+        p.text-muted.mb-3
+          | Upload a resume to automatically extract name, email, and LinkedIn URL.
+          br
+          | The full resume text is indexed for search. Review the profile after import.
+        = form_with url: ats_crm_imports_path, multipart: true, local: true do |f|
+          = hidden_field_tag :import_type, "file"
+          .mb-3
+            = f.label :file, "Resume File", class: "form-label"
+            = f.file_field :file, class: "form-control", accept: ".pdf,.doc,.docx"
+          = f.submit "Import Resume", class: "btn btn-primary"

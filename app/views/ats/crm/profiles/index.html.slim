@@ -1,0 +1,23 @@
+- ats_title("CRM")
+
+= render "grid_form_filters", grid: @profiles_grid
+
+ruby:
+  profiles = @profiles_grid.assets.without_count
+
+.row.align-items-center.mb-3.row-gap-2
+  - if @profiles_count > @profiles_grid.assets.limit_value
+    .col-12.col-lg-auto
+      = paginate(@profiles_grid.assets, theme: "ats")
+  .col-12.col-lg
+    b> Profiles:
+    = render PrettyNumberComponent.new(@profiles_count)
+  .col-auto
+    - if allowed_to?(:new?, with: ATS::CandidatePolicy)
+      = render ButtonLinkComponent.new(new_ats_crm_import_path)
+        | Import Profiles
+
+= datagrid_table(@profiles_grid, profiles)
+
+- if @profiles_count > @profiles_grid.assets.limit_value
+  = paginate(@profiles_grid.assets, theme: "ats")

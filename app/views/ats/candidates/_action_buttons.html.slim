@@ -14,3 +14,16 @@
       li = link_to "GitHub", profile.github_search_url, class: "dropdown-item", target: "_blank"
       li = link_to "Google", profile.google_search_url, class: "dropdown-item", target: "_blank"
       li = link_to "LinkedIn", profile.linkedin_search_url, class: "dropdown-item", target: "_blank"
+  - if allowed_to?(:update?, profile, with: ATS::CandidatePolicy)
+    - if profile.in_crm?
+      = button_to "Remove from CRM",
+                  remove_from_crm_ats_crm_profile_path(profile),
+                  method: :post,
+                  class: "btn btn-sm btn-outline-secondary mt-1",
+                  data: { turbo: false }
+    - else
+      = button_to "Add to CRM",
+                  move_to_crm_ats_crm_profiles_path(candidate_id: profile.id),
+                  method: :post,
+                  class: "btn btn-sm btn-outline-primary mt-1",
+                  data: { turbo: false }

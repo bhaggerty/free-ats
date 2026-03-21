@@ -106,6 +106,18 @@ Rails.application.routes.draw do
 
     resources :quick_search, only: :index, controller: "quick_search"
     resources :compose, only: %i[new create]
+
+    namespace :crm do
+      resources :profiles, only: %i[index] do
+        collection do
+          post :move_to_crm
+        end
+        member do
+          post :remove_from_crm
+        end
+      end
+      resources :imports, only: %i[new create]
+    end
   end
 
   namespace :api, defaults: { format: "json" } do
@@ -162,6 +174,11 @@ Rails.application.routes.draw do
         post "update_all", on: :collection
       end
     end
+  end
+
+  # Letter Opener Web — view intercepted emails in development
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
   # The below routes are using the basic authuentication.

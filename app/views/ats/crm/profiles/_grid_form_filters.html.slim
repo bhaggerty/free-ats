@@ -1,0 +1,15 @@
+/# locals: (grid:)
+
+.card.mb-3
+  .card-body.p-3
+    = form_for grid, method: :get, url: ats_crm_profiles_path, local: true,
+               html: { class: "ats_crm_profiles_grid" } do |f|
+      .row
+        - grid.filters.each do |filter|
+          .datagrid-filter.filter.mb-3.col-xl-4.col-md-6.col-sm-12
+            = grid_filter(form: f, grid:, filter:)
+      .datagrid-actions.hstack.gap-2
+        = render ButtonComponent.new
+          = t("datagrid.form.search")
+        = render ButtonLinkComponent.new(url_for(grid.to_param => {}), variant: :secondary)
+          = t("datagrid.form.reset")

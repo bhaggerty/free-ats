@@ -30,6 +30,7 @@ gem "kaminari"
 gem "liquid", "~> 5.0"
 gem "lookbook", "~> 2.0.0"
 gem "mission_control-jobs"
+gem "docx"
 gem "pdf-reader"
 gem "pg", "~> 1.1"
 gem "pghero"
@@ -81,7 +82,7 @@ end
 
 group :development do
   gem "dockerfile-rails", ">= 1.6"
-  gem "letter_opener"
+  gem "letter_opener_web"
   gem "rack-mini-profiler"
   gem "web-console"
 end

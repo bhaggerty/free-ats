@@ -28,6 +28,8 @@ nav.navbar.navbar-expand-md.align-items-center.fixed-top.header.column-gap-3
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
           li.nav-item class=("active" if @nav_item == :candidates)
             = link_to t("core.candidates"), ats_candidates_path, class: "nav-link"
+          li.nav-item class=("active" if @nav_item == :crm)
+            = link_to "CRM", ats_crm_profiles_path, class: "nav-link"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
           li.nav-item class=("active" if @nav_item == :positions)
             = link_to t("core.positions"), ats_positions_path, class: "nav-link"

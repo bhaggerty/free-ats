@@ -82,7 +82,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
   # Emails are saved to tmp/mails by default. Change to :smtp and add environment variables for
   # user_name and password to test as it works in production.
-  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :letter_opener_web
   config.action_mailer.perform_deliveries = true
   config.action_mailer.smtp_settings = {
     user_name: ENV.fetch("MAILER_SMTP_USER_NAME", ""),
